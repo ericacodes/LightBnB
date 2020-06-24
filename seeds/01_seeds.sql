@@ -1,0 +1,10 @@
+INSERT INTO users (name, email, password) VALUES 
+('Erica', 'erica@email.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u'),
+('Lynn', 'lynn@email.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u'),
+('Chen', 'chen@email.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u');
+
+INSERT INTO properties (owner_id, title, description, thumbnail_photo_url, cover_photo_url, cost_per_night, parking_spaces, number_of_bathrooms, number_of_bedrooms, country, street, city, province, post_code, active) VALUES (1, 'Mount', 'description', 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 300, 2, 4, 4, 'Canada', 'Sesame', 'Toronto', 'Ontario', 'P05T', true), (1, 'West', 'description', 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 100, 0, 2, 1, 'Canada', 'Bagel', 'Montreal', 'Quebec', 'C0D5', true), (3, 'Mount', 'description', 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 'https://images.pexels.com/photos/106399/pexels-photo-106399.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500', 600, 5, 6, 8, 'Canada', 'Toasted', 'Vancouver', 'British Columbia', 'P05TC0D5', false); 
+
+INSERT INTO reservations (property_id, guest_id, start_date, end_date) VALUES (1, 2, '2020-05-23', '2020-05-26'), (2, 3, '2020-05-23', '2020-05-26'), (2, 2, '2020-06-20', '2020-06-22');
+
+INSERT INTO property_reviews (guest_id, property_id, reservation_id, rating, message) VALUES (2, 1, 1, 5, 'message'), (3, 2, 2, 5, 'message'), (2, 2, 3, 4, 'message');
