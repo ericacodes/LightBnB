@@ -21,12 +21,7 @@ const getUserWithEmail = function(email) {
     SELECT * 
     FROM users
     WHERE email = $1`, [email])
-    .then(res => {
-      if (res.rows.length !== 0) {
-        return res.rows[0];
-      }
-      return null;
-    })
+    .then(res => res.rows && res.rows.length > 0 ? res.rows[0] : null)
     .catch(err => console.log(err));
 };
 exports.getUserWithEmail = getUserWithEmail;
@@ -41,12 +36,7 @@ const getUserWithId = function(id) {
   SELECT * 
   FROM users
   WHERE id = $1`, [id])
-  .then(res => {
-    if (res.rows.length !== 0) {
-      return res.rows[0];
-    }
-    return null;
-  })
+  .then(res => res.rows && res.rows.length > 0 ? res.rows[0] : null)
   .catch(err => console.log(err));
 }
 exports.getUserWithId = getUserWithId;
@@ -56,18 +46,11 @@ exports.getUserWithId = getUserWithId;
  * @param {{name: string, password: string, email: string}} user
  * @return {Promise<{}>} A promise to the user.
  */
-// const addUser =  function(user) {
-//   const userId = Object.keys(users).length + 1;
-//   user.id = userId;
-//   users[userId] = user;
-//   return Promise.resolve(user);
-// }
-
 const addUser =  function(user) {
   return pool.query(`
   INSERT INTO users (name, password, email) 
   VALUES ($1, $2, $3) RETURNING *`, [user.name, user.password, user.email])
-  .catch(err => console.log(err))
+  .catch(err => console.log(err));
 }
 exports.addUser = addUser;
 
@@ -78,8 +61,22 @@ exports.addUser = addUser;
  * @param {string} guest_id The id of the user.
  * @return {Promise<[{}]>} A promise to the reservations.
  */
-const getAllReservations = function(guest_id, limit = 10) {
-  return getAllProperties(null, 2);
+// const getAllReservations = function(guest_id, limit = 10) {
+//   return getAllProperties(null, 2);
+// }
+
+const getAllReservations = function(guest_id) {
+  return pool.query(`
+  SELECT reservations.*, properties.*, AVG(property_reviews.rating) AS average_rating
+  FROM reservations 
+  JOIN properties ON properties.id = reservations.property_id
+  JOIN property_reviews ON property_reviews.property_id = reservations.property_id
+  WHERE reservations.guest_id = $1 AND reservations.end_date < now()::date
+  GROUP BY reservations.id, properties.id
+  ORDER BY reservations.start_date
+  LIMIT 10`, [guest_id])
+  .then(res => res.rows)
+  .catch(err => console.log(err));
 }
 exports.getAllReservations = getAllReservations;
 
